@@ -1,0 +1,100 @@
+.root
+{
+    -fx-background-color: #F1F1F1;
+    -fx-padding: 5;
+    -fx-font-size: 11;
+}
+
+/* - - - - - - - - - */
+/* Text field */
+/* - - - - - - - - - */
+
+.text-field.error
+{
+    -fx-text-box-border: #dc3545;
+    -fx-focus-color: #dc3545;
+    -fx-effect: dropshadow(three-pass-box, rgba(220, 53, 69, 0.2), 2, 0, 0, 0);
+}
+
+/* - - - - - - - - - */
+/* Tabs pane */
+/* - - - - - - - - - */
+
+.tab-header-background
+{
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 0 0 1 0;
+}
+
+.tab-pane
+{
+  -fx-border-insets: 9 3 3 3;
+  -fx-background-color: #F1F1F1;
+  -fx-border-color: #CCCCCC;
+  -fx-border-width: 1;
+  -fx-border-radius: 2;
+}
+
+/* - - - - - - - - - */
+/* Titled pane */
+/* - - - - - - - - - */
+
+.bordered-titled-label
+{
+  -fx-background-color: inherit;
+  -fx-translate-y: -18;
+  -fx-translate-x: 5;
+  -fx-text-fill: black;
+}
+
+.bordered-titled-border
+{
+  -fx-content-display: top;
+  -fx-border-insets: 9 3 3 3;
+  -fx-background-color: #F1F1F1;
+  -fx-border-color: #CCCCCC;
+  -fx-border-width: 1;
+  -fx-border-radius: 2;
+  -fx-padding: 9 3 3 3;
+}
+
+.bordered-titled-content
+{
+  -fx-padding: 3 3 3 3;
+}
+
+/* - - - - - - - - - */
+/* Buttons */
+/* - - - - - - - - - */
+
+.button-icon
+{
+    -fx-background-size: 13 13;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.button-icon.small
+{
+    -fx-background-size: 10 10;
+}
+
+.button-icon.reset
+{
+    -fx-background-image: url("/ru/er_log/icons/reset.png");
+}
+
+.button-icon.plus
+{
+    -fx-background-image: url("/ru/er_log/icons/plus.png");
+}
+
+.button-icon.minus
+{
+    -fx-background-image: url("/ru/er_log/icons/minus.png");
+}
+
+.button-icon.help
+{
+    -fx-background-image: url("/ru/er_log/icons/help.png");
+}

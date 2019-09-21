@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import ru.er_log.ui.BorderedTitledPane?>
+<?import ru.er_log.ui.TextFieldExtended?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="-Infinity" prefWidth="830.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.er_log.controller.RootController">
+   <children>
+      <BorderPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <BorderedTitledPane title="Network Interface" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="comboboxNetadapters" maxWidth="1.7976931348623157E308" promptText="Please, select a network interface" />
+               </children>
+            </BorderedTitledPane>
+         </top>
+         <center>
+            <VBox maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox prefWidth="30.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="NEVER">
+                                <tabs>
+                                  <Tab text="IPv4">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <GridPane hgap="3.0" prefWidth="240.0" vgap="3.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="ALWAYS" />
+                                                    <ColumnConstraints hgrow="ALWAYS" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints fillHeight="false" vgrow="NEVER" />
+                                                    <RowConstraints vgrow="NEVER" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4ip" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="1" maxNumValue="4" maxWidth="40.0" minNumValue="4" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <Label text="IP version" />
+                                                      <TextFieldExtended fx:id="fieldIPv4ihl" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="2" maxNumValue="15" maxWidth="40.0" minNumValue="5" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <Label text="Internet Header Length" GridPane.rowIndex="1" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </GridPane>
+                                                <BorderedTitledPane title="Type of Service">
+                                                   <children>
+                                                      <VBox>
+                                                         <children>
+                                                            <GridPane hgap="3.0" vgap="3.0" VBox.vgrow="ALWAYS">
+                                                              <columnConstraints>
+                                                                <ColumnConstraints hgrow="NEVER" />
+                                                                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                                                              </columnConstraints>
+                                                              <rowConstraints>
+                                                                <RowConstraints vgrow="SOMETIMES" />
+                                                              </rowConstraints>
+                                                               <children>
+                                                                  <Label text="[Pre] Precedence" />
+                                                                  <ComboBox fx:id="comboboxIPv4tosPre" prefWidth="130.0" GridPane.columnIndex="1">
+                                                                     <GridPane.margin>
+                                                                        <Insets />
+                                                                     </GridPane.margin>
+                                                                     <padding>
+                                                                        <Insets left="5.0" />
+                                                                     </padding>
+                                                                  </ComboBox>
+                                                               </children>
+                                                            </GridPane>
+                                                            <VBox spacing="3.0">
+                                                               <children>
+                                                                  <CheckBox fx:id="checkboxIPv4tosD" mnemonicParsing="false" text="[D] Minimize delay" />
+                                                                  <CheckBox fx:id="checkboxIPv4tosT" mnemonicParsing="false" text="[T] Maximize throughout" />
+                                                                  <CheckBox fx:id="checkboxIPv4tosR" mnemonicParsing="false" text="[R] Maximize reliability" />
+                                                                  <CheckBox fx:id="checkboxIPv4tosC" mnemonicParsing="false" text="[C] Minimize cost" />
+                                                                  <CheckBox fx:id="checkboxIPv4tosX" mnemonicParsing="false" text="[x] Reserved" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets top="3.0" />
+                                                               </VBox.margin>
+                                                            </VBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </BorderedTitledPane>
+                                                <GridPane hgap="3.0" prefWidth="240.0" vgap="3.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="ALWAYS" />
+                                                      <ColumnConstraints hgrow="ALWAYS" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints vgrow="NEVER" />
+                                                      <RowConstraints vgrow="NEVER" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4length" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <TextFieldExtended fx:id="fieldIPv4id" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <Label text="Identification" GridPane.rowIndex="1" />
+                                                      <CheckBox fx:id="checkboxIPv4length" mnemonicParsing="false" text="Total Length" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </GridPane>
+                                                <BorderedTitledPane title="Flags">
+                                                   <children>
+                                                      <VBox spacing="3.0">
+                                                         <children>
+                                                            <CheckBox fx:id="checkboxIPv4flagsX" mnemonicParsing="false" text="[x] Reserved" />
+                                                            <CheckBox fx:id="checkboxIPv4flagsD" mnemonicParsing="false" text="[D] Don't Fragment" />
+                                                            <CheckBox fx:id="checkboxIPv4flagsM" mnemonicParsing="false" text="[M] More Fragments" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </BorderedTitledPane>
+                                                <GridPane hgap="3.0" prefWidth="240.0" vgap="3.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="ALWAYS" />
+                                                      <ColumnConstraints hgrow="ALWAYS" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints vgrow="NEVER" />
+                                                      <RowConstraints vgrow="NEVER" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4ttl" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <TextFieldExtended fx:id="fieldIPv4checksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <Label text="Time to Live" />
+                                                      <CheckBox fx:id="checkboxIPv4checksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="1" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </GridPane>
+                                                <BorderedTitledPane title="Source IP">
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4srcip" alignment="CENTER" maxCharsNumber="15" promptText="127.0.0.1" />
+                                                   </children>
+                                                </BorderedTitledPane>
+                                                <BorderedTitledPane title="Destination IP">
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4dstip" alignment="CENTER" maxCharsNumber="15" promptText="127.0.0.1" />
+                                                   </children>
+                                                </BorderedTitledPane>
+                                                <BorderedTitledPane title="Options (optional)">
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldIPv4options" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" />
+                                                   </children>
+                                                </BorderedTitledPane>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
+                              <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" top="10.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Separator />
+                                    <Separator />
+                                 </children>
+                              </VBox>
+                              <BorderedTitledPane title="" VBox.vgrow="NEVER">
+                                 <children>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <CheckBox fx:id="checkboxLoop" mnemonicParsing="false" text="Loop sending" />
+                                          <GridPane alignment="CENTER" hgap="3.0" vgap="3.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints vgrow="NEVER" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Button fx:id="buttonStart" maxWidth="1.7976931348623157E308" minHeight="29.0" mnemonicParsing="false" text="Start" />
+                                                <Button fx:id="buttonStop" maxWidth="1.7976931348623157E308" minHeight="29.0" mnemonicParsing="false" text="Stop" GridPane.columnIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </BorderedTitledPane>
+                           </children>
+                        </VBox>
+                        <TabPane fx:id="tabpaneNetworkLayer" prefWidth="30.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                          <tabs>
+                            <Tab text="TCP">
+                              <content>
+                                    <VBox>
+                                       <children>
+                                          <GridPane hgap="3.0" vgap="3.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="ALWAYS" />
+                                              <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                              <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                              <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Source Port" />
+                                                <TextFieldExtended fx:id="fieldTCPsrcport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Destination Port" GridPane.rowIndex="1" />
+                                                <TextFieldExtended fx:id="fieldTCPdstport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Seq Number" GridPane.rowIndex="2" />
+                                                <TextFieldExtended fx:id="fieldTCPseqnum" alignment="CENTER" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Ack Number" GridPane.rowIndex="3" />
+                                                <TextFieldExtended fx:id="fieldTCPacknum" alignment="CENTER" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Offset" GridPane.rowIndex="4" />
+                                                <TextFieldExtended fx:id="fieldTCPoffset" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="2" maxNumValue="15" maxWidth="72.0" minNumValue="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <BorderedTitledPane title="Reserved Bits" VBox.vgrow="NEVER">
+                                             <children>
+                                                <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <CheckBox fx:id="checkboxTCPreserved_0" mnemonicParsing="false" />
+                                                      <CheckBox fx:id="checkboxTCPreserved_1" mnemonicParsing="false" GridPane.columnIndex="1" />
+                                                      <CheckBox fx:id="checkboxTCPreserved_2" mnemonicParsing="false" GridPane.columnIndex="2" />
+                                                      <CheckBox fx:id="checkboxTCPreserved_3" mnemonicParsing="false" GridPane.columnIndex="3" />
+                                                      <CheckBox fx:id="checkboxTCPreserved_4" mnemonicParsing="false" GridPane.columnIndex="4" />
+                                                      <CheckBox fx:id="checkboxTCPreserved_5" mnemonicParsing="false" GridPane.columnIndex="5" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="3.0" left="5.0" right="5.0" top="1.0" />
+                                                   </padding>
+                                                </GridPane>
+                                             </children>
+                                          </BorderedTitledPane>
+                                          <BorderedTitledPane title="Flags">
+                                             <children>
+                                                <GridPane hgap="3.0" vgap="3.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints vgrow="NEVER" />
+                                                    <RowConstraints vgrow="NEVER" />
+                                                    <RowConstraints vgrow="NEVER" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <CheckBox fx:id="checkboxTCPflagsU" mnemonicParsing="false" text="[U] URG" />
+                                                      <CheckBox fx:id="checkboxTCPflagsA" mnemonicParsing="false" text="[A] ACK" GridPane.rowIndex="1" />
+                                                      <CheckBox fx:id="checkboxTCPflagsP" mnemonicParsing="false" text="[P] PSH" GridPane.rowIndex="2" />
+                                                      <CheckBox fx:id="checkboxTCPflagsR" mnemonicParsing="false" text="[R] RST" GridPane.columnIndex="1" />
+                                                      <CheckBox fx:id="checkboxTCPflagsS" mnemonicParsing="false" text="[S] SYN" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <CheckBox fx:id="checkboxTCPflagsF" mnemonicParsing="false" text="[F] FIN" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </BorderedTitledPane>
+                                          <GridPane hgap="3.0" vgap="3.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="ALWAYS" />
+                                                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Window Size" />
+                                                <TextFieldExtended fx:id="fieldTCPwindowsize" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <CheckBox fx:id="checkboxTCPchecksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="1" />
+                                                <TextFieldExtended fx:id="fieldTCPchecksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Urgent Pointer" GridPane.rowIndex="2" />
+                                                <TextFieldExtended fx:id="fieldTCPurgent" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <BorderedTitledPane title="Options (optional)">
+                                             <children>
+                                                <TextFieldExtended fx:id="fieldTCPoptions" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" />
+                                             </children>
+                                          </BorderedTitledPane>
+                                          <BorderedTitledPane title="Data" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="fieldTCPdata" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                                             </children>
+                                          </BorderedTitledPane>
+                                       </children>
+                                    </VBox>
+                              </content>
+                            </Tab>
+                            <Tab text="UDP">
+                              <content>
+                                    <VBox>
+                                       <children>
+                                          <GridPane hgap="3.0" vgap="3.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="ALWAYS" />
+                                                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Source Port" />
+                                                <TextFieldExtended fx:id="fieldUDPsrcport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Destination Port" GridPane.rowIndex="1" />
+                                                <TextFieldExtended fx:id="fieldUDPdstport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Length" GridPane.rowIndex="2" />
+                                                <TextFieldExtended fx:id="fieldUDPlength" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" minNumValue="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <CheckBox fx:id="checkboxUDPchecksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="3" />
+                                                <TextFieldExtended fx:id="fieldUDPchecksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <BorderedTitledPane title="Data" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="fieldUDPdata" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                                             </children>
+                                          </BorderedTitledPane>
+                                       </children>
+                                    </VBox>
+                              </content>
+                            </Tab>
+                              <Tab text="ICMP">
+                                <content>
+                                    <VBox>
+                                       <children>
+                                          <GridPane hgap="3.0" vgap="3.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="ALWAYS" />
+                                                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                                <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Type" />
+                                                <TextFieldExtended fx:id="fieldICMPtype" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Code" GridPane.rowIndex="1" />
+                                                <TextFieldExtended fx:id="fieldICMPcode" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <CheckBox fx:id="checkboxICMPchecksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="2" />
+                                                <TextFieldExtended fx:id="fieldICMPchecksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Identifier" GridPane.rowIndex="3" />
+                                                <TextFieldExtended fx:id="fieldICMPid" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                                <Label text="Sequence Number" GridPane.rowIndex="4" />
+                                                <TextFieldExtended fx:id="fieldICMPseq" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextFieldExtended>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <BorderedTitledPane title="Data" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="fieldICMPdata" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                                             </children>
+                                          </BorderedTitledPane>
+                                       </children>
+                                    </VBox>
+                                </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                        <VBox prefWidth="40.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <BorderedTitledPane title="Ethernet" VBox.vgrow="NEVER">
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <BorderedTitledPane title="Source MAC">
+                                             <children>
+                                                <GridPane hgap="3.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldETHsrcmac" alignment="CENTER" maxCharsNumber="17" prefHeight="22.0" prefWidth="219.0" promptText="FF-FF-FF-FF-FF-FF" GridPane.hgrow="ALWAYS" />
+                                                      <Button id="reset_small" fx:id="buttonETHsrcmacReset" minHeight="22.0" minWidth="22.0" mnemonicParsing="false" GridPane.columnIndex="1">
+                                                         <styleClass>
+                                                            <String fx:value="button-icon" />
+                                                            <String fx:value="small" />
+                                                            <String fx:value="reset" />
+                                                         </styleClass>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </BorderedTitledPane>
+                                          <BorderedTitledPane title="Destination MAC">
+                                             <children>
+                                                <GridPane hgap="3.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TextFieldExtended fx:id="fieldETHdstmac" alignment="CENTER" maxCharsNumber="17" prefHeight="22.0" prefWidth="219.0" promptText="FF-FF-FF-FF-FF-FF" GridPane.hgrow="ALWAYS" />
+                                                      <Button id="reset_small" fx:id="buttonETHdstmacReset" minHeight="22.0" minWidth="22.0" mnemonicParsing="false" GridPane.columnIndex="1">
+                                                         <styleClass>
+                                                            <String fx:value="button-icon" />
+                                                            <String fx:value="small" />
+                                                            <String fx:value="reset" />
+                                                         </styleClass>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </BorderedTitledPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </BorderedTitledPane>
+                              <BorderedTitledPane title="Delay (ms)">
+                                 <children>
+                                    <Slider fx:id="sliderDelay" majorTickUnit="200.0" max="1000.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="100.0">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                    </Slider>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </BorderedTitledPane>
+                              <BorderedTitledPane title="Packet List" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <ListView fx:id="listPacket" VBox.vgrow="ALWAYS" />
+                                                <GridPane alignment="CENTER" hgap="3.0" vgap="3.0" VBox.vgrow="NEVER">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints vgrow="NEVER" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="buttonListLoad" maxWidth="1.7976931348623157E308" minHeight="29.0" mnemonicParsing="false" text="Load" />
+                                                      <Button fx:id="buttonListSave" maxWidth="1.7976931348623157E308" minHeight="29.0" mnemonicParsing="false" text="Save" GridPane.columnIndex="1" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                          <VBox spacing="3.0" HBox.hgrow="NEVER">
+                                             <children>
+                                                <Button fx:id="buttonListAdd" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="button-icon" />
+                                                      <String fx:value="plus" />
+                                                   </styleClass>
+                                                </Button>
+                                                <Button fx:id="buttonListRemove" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="button-icon" />
+                                                      <String fx:value="minus" />
+                                                   </styleClass>
+                                                </Button>
+                                                <VBox alignment="BOTTOM_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button fx:id="buttonHelp" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
+                                                         <styleClass>
+                                                            <String fx:value="button-icon" />
+                                                            <String fx:value="help" />
+                                                         </styleClass>
+                                                      </Button>
+                                                      <Button fx:id="buttonResetFields" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
+                                                         <styleClass>
+                                                            <String fx:value="button-icon" />
+                                                            <String fx:value="reset" />
+                                                         </styleClass>
+                                                      </Button>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </VBox>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="3.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </BorderedTitledPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
