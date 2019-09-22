@@ -7,8 +7,6 @@ import javafx.scene.control.TextField;
 
 import java.util.Collections;
 
-import static ru.er_log.components.Utils.log;
-
 public class TextFieldExtended extends TextField
 {
     private BooleanProperty letOnlyNumbers = new SimpleBooleanProperty();

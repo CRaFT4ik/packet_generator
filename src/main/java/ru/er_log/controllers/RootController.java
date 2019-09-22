@@ -1,7 +1,5 @@
-package ru.er_log.controller;
+package ru.er_log.controllers;
 
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -11,15 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import org.pcap4j.core.PcapAddress;
-import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.util.ByteArrays;
 import org.pcap4j.util.MacAddress;
+import ru.er_log.utils.Utils;
 import ru.er_log.components.*;
-import ru.er_log.model.MainSettingsModel;
+import ru.er_log.models.MainSettingsModel;
 import ru.er_log.ui.TextFieldExtended;
 
-import static ru.er_log.components.Utils.log;
+import static ru.er_log.utils.Utils.log;
 
 public class RootController implements Initializable
 {

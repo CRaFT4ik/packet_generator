@@ -22,7 +22,7 @@
 <?import ru.er_log.ui.BorderedTitledPane?>
 <?import ru.er_log.ui.TextFieldExtended?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="-Infinity" prefWidth="830.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.er_log.controller.RootController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="-Infinity" prefWidth="830.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.er_log.controllers.RootController">
    <children>
       <BorderPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>

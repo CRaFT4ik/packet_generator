@@ -1,29 +1,18 @@
-package ru.er_log.model;
+package ru.er_log.models;
 
-import com.logicmonitor.macaddress.detector.MacAddressHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.pcap4j.core.*;
-import org.pcap4j.packet.*;
-import org.pcap4j.packet.namednumber.EtherType;
-import org.pcap4j.util.ByteArrays;
-import org.pcap4j.util.MacAddress;
-import ru.er_log.components.Utils;
+import ru.er_log.utils.Utils;
 import ru.er_log.components.eConfig;
 import ru.er_log.components.eIPv4Config;
 import ru.er_log.components.eNetworkInterface;
-import ru.er_log.exceptions.NotFullConfigurationException;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.Arrays;
-
-import static ru.er_log.components.Utils.logErr;
 
 public class MainSettingsModel
 {

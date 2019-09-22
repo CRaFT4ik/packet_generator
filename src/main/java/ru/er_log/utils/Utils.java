@@ -1,9 +1,10 @@
-package ru.er_log.components;
+package ru.er_log.utils;
 
 import com.logicmonitor.macaddress.detector.MacAddressHelper;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.util.MacAddress;
+import ru.er_log.components.eNetworkInterface;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Utils
 {
@@ -102,6 +104,46 @@ public class Utils
         return sdf.format(cal.getTime());
     }
 
+    /*
+     * TODO:
+     *  - Works on Linux, untested on Windows, MAC, ... .
+     *  - Searches in "Destination" only with "0.0.0.0" or "default" values, not by IP.
+     */
+    public static InetAddress getDefaultGateway(String ip) // ip is unused param.
+    {
+        try
+        {
+            Process result = Runtime.getRuntime().exec("netstat -rn");
+            BufferedReader output = new BufferedReader(new InputStreamReader(result.getInputStream()));
+
+            String line = output.readLine();
+            if (line == null) return null;
+
+            while (line != null)
+            {
+                if (line.startsWith("default") || line.startsWith("0.0.0.0"))
+                    break;
+                line = output.readLine();
+            }
+
+            assert line != null;
+            StringTokenizer st = new StringTokenizer(line);
+            st.nextToken();
+            String gateway = st.nextToken();
+
+            InetAddress inetAddress = null;
+            try { inetAddress = Inet4Address.getByName(gateway); }
+            catch (UnknownHostException e) { return null; }
+
+            return inetAddress;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static MacAddress getMacAddressByIp(eNetworkInterface eNetworkInterface, String ip)
     {
         if (eNetworkInterface == null || ip == null) return null;
@@ -113,25 +155,9 @@ public class Utils
         MacAddress macAddress = MacAddressHelper.getInstance().getMacAddress(inetAddress);
         if (macAddress != null) return macAddress;
 
-        PcapNetworkInterface networkInterface = eNetworkInterface.getNetworkInterface();
-
-        logWarn(networkInterface.getLinkLayerAddresses());
-        return (MacAddress) networkInterface.getLinkLayerAddresses().get(0);
-
-////
-////        for (PcapAddress pcapAddress : networkInterface.getAddresses())
-////        {
-////            InetAddress interfaceAddress = pcapAddress.getAddress();
-////            if (interfaceAddress instanceof Inet4Address)
-////            {
-////
-////                if (MacAddressHelper._isUnderSameSubNet(inetAddress, pcapAddress.getAddress(), pcapAddress.getNetmask()))
-////                {
-////                    return MacAddressHelper.getInstance().getMacAddress(inetAddress);
-////                }
-////            }
-////        }
-//
-//        return null;
+        // If we can't find MAC for @ip, we trying to find MAC for gateway address.
+        InetAddress gateway = getDefaultGateway(ip);
+        macAddress = MacAddressHelper.getInstance().getMacAddress(gateway);
+        return macAddress;
     }
 }

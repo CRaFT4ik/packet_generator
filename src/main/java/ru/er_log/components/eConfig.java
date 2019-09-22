@@ -1,9 +1,8 @@
 package ru.er_log.components;
 
+import ru.er_log.utils.Utils;
+
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Random;
 
 /*
  * Describes each field of packet model and a whole packet.
