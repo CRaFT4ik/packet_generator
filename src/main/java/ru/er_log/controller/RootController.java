@@ -1,5 +1,7 @@
 package ru.er_log.controller;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -9,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import org.pcap4j.core.PcapAddress;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.util.ByteArrays;
+import org.pcap4j.util.MacAddress;
 import ru.er_log.components.*;
 import ru.er_log.model.MainSettingsModel;
 import ru.er_log.ui.TextFieldExtended;
@@ -97,11 +103,13 @@ public class RootController implements Initializable
     @FXML private Button buttonResetFields;
 
     private MainSettingsModel mainSettingsModel;
+    //private eConfig defaultConfig;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         mainSettingsModel = new MainSettingsModel();
+        //defaultConfig = mainSettingsModel.generateDefaultConfig();
 
         comboboxNetadapters.setItems(mainSettingsModel.getNetworkInterfaces());
 
@@ -130,6 +138,54 @@ public class RootController implements Initializable
 
     private void initializeEventsListeners()
     {
+        buttonETHsrcmacReset.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            private void works()
+            {
+                eNetworkInterface eNetworkInterface = getCurrentNetworkInterface();
+                if (eNetworkInterface == null) return;
+
+                String srcIP = fieldIPv4srcip.getText();
+                if (srcIP.isEmpty()) return;
+
+                MacAddress macAddress = Utils.getMacAddressByIp(eNetworkInterface, srcIP);
+                if (macAddress == null) return;
+
+                String mac = ByteArrays.toHexString(macAddress.getAddress(), "-").toUpperCase();
+                if (!mac.isEmpty()) fieldETHsrcmac.setText(mac);
+            }
+
+            @Override
+            public void handle(MouseEvent event)
+            {
+                new Thread(this::works).start();
+            }
+        });
+
+        buttonETHdstmacReset.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            private void works()
+            {
+                eNetworkInterface eNetworkInterface = getCurrentNetworkInterface();
+                if (eNetworkInterface == null) return;
+
+                String dstIP = fieldIPv4dstip.getText();
+                if (dstIP.isEmpty()) return;
+
+                MacAddress macAddress = Utils.getMacAddressByIp(eNetworkInterface, dstIP);
+                if (macAddress == null) return;
+
+                String mac = ByteArrays.toHexString(macAddress.getAddress(), "-").toUpperCase();
+                if (!mac.isEmpty()) fieldETHdstmac.setText(mac);
+            }
+
+            @Override
+            public void handle(MouseEvent event)
+            {
+                new Thread(this::works).start();
+            }
+        });
+
         listPacket.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
         {
             @Override
@@ -169,7 +225,7 @@ public class RootController implements Initializable
             {
                 Utils.serialize(
                         new ArrayList<eConfig>(mainSettingsModel.getConfigurationList()),
-                        "export.epg"//_" + (new Random().nextInt(900000) + 100000) + ".epg"
+                        "ePG_export/" + mainSettingsModel.getExportFilename()
                 );
             }
         });
@@ -179,7 +235,7 @@ public class RootController implements Initializable
             @Override
             public void handle(MouseEvent event)
             {
-                Object object = Utils.deserialize("export.epg");
+                Object object = Utils.deserialize("ePG_export/export.epg");
                 if (object instanceof ArrayList<?> && ((ArrayList<?>) object).get(0) instanceof eConfig)
                 {
                     ArrayList<eConfig> arrayList = (ArrayList<eConfig>) object;
@@ -208,8 +264,15 @@ public class RootController implements Initializable
         });
     }
 
+    private eNetworkInterface getCurrentNetworkInterface()
+    {
+        return comboboxNetadapters.getSelectionModel().getSelectedItem();
+    }
+
     private void setCurrentViewConfig(eConfig config)
     {
+        if (config == null) return;
+
         tabpaneNetworkLayer.getSelectionModel().select(config.getSelectedTabId());
 
         eEthernetConfig ethernetConfig = config.getEthernetConfig();

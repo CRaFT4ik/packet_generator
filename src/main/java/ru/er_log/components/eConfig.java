@@ -24,9 +24,7 @@ public class eConfig implements Serializable
 
     public eConfig()
     {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YY HH:mm:ss");
-        this.createTime = sdf.format(cal.getTime());
+        this.createTime = Utils.getTime("dd.MM.YY HH:mm:ss");
     }
 
     @Override
