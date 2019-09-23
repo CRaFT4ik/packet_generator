@@ -2,7 +2,7 @@ package ru.er_log.components;
 
 import java.io.Serializable;
 
-public class eUDPConfig implements Serializable
+public class eUDPConfig implements IConfig, Serializable
 {
     private int srcPort;
     private int dstPort;
@@ -11,6 +11,12 @@ public class eUDPConfig implements Serializable
     private String data;
 
     public eUDPConfig() {}
+
+    @Override
+    public void verify() throws NullPointerException
+    {
+
+    }
 
     public int getSrcPort()
     {

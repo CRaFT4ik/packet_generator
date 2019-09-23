@@ -1,7 +1,10 @@
 package ru.er_log.controllers;
 
+import java.io.File;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
@@ -9,6 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.pcap4j.util.ByteArrays;
 import org.pcap4j.util.MacAddress;
 import ru.er_log.utils.Utils;
@@ -99,6 +105,8 @@ public class RootController implements Initializable
     @FXML private Button buttonHelp;
     @FXML private Button buttonResetFields;
 
+    private Stage stage;
+
     private MainSettingsModel mainSettingsModel;
     //private eConfig defaultConfig;
 
@@ -117,6 +125,11 @@ public class RootController implements Initializable
 
         initializeBindings();
         initializeEventsListeners();
+    }
+
+    public void setStage(Stage stage)
+    {
+        this.stage = stage;
     }
 
     private void initializeBindings()
@@ -220,9 +233,14 @@ public class RootController implements Initializable
             @Override
             public void handle(MouseEvent event)
             {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Save Configuration File");
+                File selectedDirectory = directoryChooser.showDialog(stage);
+                if (selectedDirectory == null) return;
+
                 Utils.serialize(
                         new ArrayList<eConfig>(mainSettingsModel.getConfigurationList()),
-                        "ePG_export/" + mainSettingsModel.getExportFilename()
+                        selectedDirectory.toString() + "/" + mainSettingsModel.getExportFilename()
                 );
             }
         });
@@ -232,7 +250,15 @@ public class RootController implements Initializable
             @Override
             public void handle(MouseEvent event)
             {
-                Object object = Utils.deserialize("ePG_export/export.epg");
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Configuration File");
+                String fileFormat = "*." + mainSettingsModel.getExportFormat();
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter(stage.getTitle() + " files (" + fileFormat + ")", fileFormat));
+                File selectedFile = fileChooser.showOpenDialog(stage);
+                if (selectedFile == null) return;
+
+                Object object = Utils.deserialize(selectedFile);
                 if (object instanceof ArrayList<?> && ((ArrayList<?>) object).get(0) instanceof eConfig)
                 {
                     ArrayList<eConfig> arrayList = (ArrayList<eConfig>) object;
@@ -259,6 +285,26 @@ public class RootController implements Initializable
                 // TODO: Create a default configuration and install it.
             }
         });
+
+        buttonStart.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            private void works()
+            {
+                try
+                {
+                    mainSettingsModel.startSending(new ArrayList<eConfig>(listPacket.getItems()), checkboxLoop.isSelected(), sliderDelay.getValue());
+                } catch (UnknownHostException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void handle(MouseEvent event)
+            {
+                new Thread(this::works).start();
+            }
+        });
     }
 
     private eNetworkInterface getCurrentNetworkInterface()
@@ -270,7 +316,7 @@ public class RootController implements Initializable
     {
         if (config == null) return;
 
-        tabpaneNetworkLayer.getSelectionModel().select(config.getSelectedTabId());
+        tabpaneNetworkLayer.getSelectionModel().select(getTabIdByType(config.getSelectedType()));
 
         eEthernetConfig ethernetConfig = config.getEthernetConfig();
         if (ethernetConfig != null)
@@ -296,7 +342,7 @@ public class RootController implements Initializable
                 checkboxIPv4tosX.setSelected(tos.isX());
             }
 
-            if (ipv4Config.getLength() != eConfig.AUTO_VALUE_INTEGER)
+            if (ipv4Config.getLength() != eConfig.AUTO_VALUE)
             {
                 checkboxIPv4length.setSelected(true);
                 fieldIPv4length.setText(Helper.numberToStringUIWrapper(ipv4Config.getLength()));
@@ -315,7 +361,7 @@ public class RootController implements Initializable
 
             fieldIPv4ttl.setText(Helper.numberToStringUIWrapper(ipv4Config.getTtl()));
 
-            if (ipv4Config.getChecksum() != eConfig.AUTO_VALUE_INTEGER)
+            if (ipv4Config.getChecksum() != eConfig.AUTO_VALUE)
             {
                 checkboxIPv4checksum.setSelected(true);
                 fieldIPv4checksum.setText(Helper.numberToStringUIWrapper(ipv4Config.getChecksum()));
@@ -360,7 +406,7 @@ public class RootController implements Initializable
 
             fieldTCPwindowsize.setText(Helper.numberToStringUIWrapper(tcpConfig.getWindowSize()));
 
-            if (tcpConfig.getChecksum() != eConfig.AUTO_VALUE_INTEGER)
+            if (tcpConfig.getChecksum() != eConfig.AUTO_VALUE)
             {
                 checkboxTCPchecksum.setSelected(true);
                 fieldTCPchecksum.setText(Helper.numberToStringUIWrapper(tcpConfig.getChecksum()));
@@ -379,7 +425,7 @@ public class RootController implements Initializable
             fieldUDPdstport.setText(Helper.numberToStringUIWrapper(udpConfig.getDstPort()));
             fieldUDPlength.setText(Helper.numberToStringUIWrapper(udpConfig.getLength()));
 
-            if (udpConfig.getChecksum() != eConfig.AUTO_VALUE_INTEGER)
+            if (udpConfig.getChecksum() != eConfig.AUTO_VALUE)
             {
                 checkboxUDPchecksum.setSelected(true);
                 fieldUDPchecksum.setText(Helper.numberToStringUIWrapper(udpConfig.getChecksum()));
@@ -395,7 +441,7 @@ public class RootController implements Initializable
             fieldICMPtype.setText(Helper.numberToStringUIWrapper(icmpConfig.getType()));
             fieldICMPcode.setText(Helper.numberToStringUIWrapper(icmpConfig.getCode()));
 
-            if (icmpConfig.getChecksum() != eConfig.AUTO_VALUE_INTEGER)
+            if (icmpConfig.getChecksum() != eConfig.AUTO_VALUE)
             {
                 checkboxICMPchecksum.setSelected(true);
                 fieldICMPchecksum.setText(Helper.numberToStringUIWrapper(icmpConfig.getChecksum()));
@@ -428,7 +474,7 @@ public class RootController implements Initializable
                 .setLength(
                         (checkboxIPv4length.isSelected())
                         ? Helper.stringToIntUIWrapper(fieldIPv4length)
-                        : eConfig.AUTO_VALUE_INTEGER)
+                        : (int) eConfig.AUTO_VALUE)
                 .setId(Helper.stringToIntUIWrapper(fieldIPv4id))
                 .setFlags(new eIPv4Config.flags(
                         checkboxIPv4flagsX.isSelected(),
@@ -438,7 +484,7 @@ public class RootController implements Initializable
                 .setChecksum(
                         (checkboxIPv4checksum.isSelected())
                         ? Helper.stringToIntUIWrapper(fieldIPv4checksum)
-                        : eConfig.AUTO_VALUE_INTEGER)
+                        : (int) eConfig.AUTO_VALUE)
                 .setSrcIP(fieldIPv4srcip.getText())
                 .setDstIP(fieldIPv4dstip.getText())
                 .setOptions(Helper.stringToLongUIWrapper(fieldIPv4options))
@@ -468,7 +514,7 @@ public class RootController implements Initializable
                 .setChecksum(
                         (checkboxTCPchecksum.isSelected())
                         ? Helper.stringToIntUIWrapper(fieldTCPchecksum)
-                        : eConfig.AUTO_VALUE_INTEGER)
+                        : (int) eConfig.AUTO_VALUE)
                 .setUrgent(Helper.stringToIntUIWrapper(fieldTCPurgent))
                 .setOptions(Helper.stringToLongUIWrapper(fieldTCPoptions))
                 .setData(fieldTCPdata.getText())
@@ -481,7 +527,7 @@ public class RootController implements Initializable
                 .setChecksum(
                         (checkboxUDPchecksum.isSelected())
                         ? Helper.stringToIntUIWrapper(fieldUDPchecksum)
-                        : eConfig.AUTO_VALUE_INTEGER)
+                        : (int) eConfig.AUTO_VALUE)
                 .setData(fieldUDPdata.getText())
                 ;
 
@@ -491,7 +537,7 @@ public class RootController implements Initializable
                 .setChecksum(
                         (checkboxICMPchecksum.isSelected())
                         ? Helper.stringToIntUIWrapper(fieldICMPchecksum)
-                        : eConfig.AUTO_VALUE_INTEGER)
+                        : (int) eConfig.AUTO_VALUE)
                 .setId(Helper.stringToIntUIWrapper(fieldICMPid))
                 .setSeqNum(Helper.stringToIntUIWrapper(fieldICMPseq))
                 .setData(fieldICMPdata.getText())
@@ -503,10 +549,49 @@ public class RootController implements Initializable
                 .setTcpConfig(tcpConfig)
                 .setUdpConfig(udpConfig)
                 .setIcmpConfig(icmpConfig)
-                .setSelectedTabId(tabpaneNetworkLayer.getSelectionModel().getSelectedIndex())
+                .setSelectedType(getTabTypeById(tabpaneNetworkLayer.getSelectionModel().getSelectedIndex()))
                 ;
 
         return mainConfig;
+    }
+
+    private int getTabIdByType(eConfig.fourthLevelPackages type)
+    {
+        int selectedId = 0;
+        switch (type)
+        {
+            case TCP:
+                selectedId = 0;
+                break;
+            case UDP:
+                selectedId = 1;
+                break;
+            case ICMP:
+                selectedId = 2;
+                break;
+        }
+
+        return selectedId;
+    }
+
+    private eConfig.fourthLevelPackages getTabTypeById(int tabId)
+    {
+        eConfig.fourthLevelPackages selectedType = eConfig.fourthLevelPackages.TCP;
+
+        switch (tabId)
+        {
+            case 0:
+                selectedType = eConfig.fourthLevelPackages.TCP;
+                break;
+            case 1:
+                selectedType = eConfig.fourthLevelPackages.UDP;
+                break;
+            case 2:
+                selectedType = eConfig.fourthLevelPackages.ICMP;
+                break;
+        }
+
+        return selectedType;
     }
 
     private static class Helper

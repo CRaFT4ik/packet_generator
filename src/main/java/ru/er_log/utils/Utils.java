@@ -1,6 +1,5 @@
 package ru.er_log.utils;
 
-import com.logicmonitor.macaddress.detector.MacAddressHelper;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.util.MacAddress;
@@ -11,9 +10,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Utils
@@ -77,12 +74,17 @@ public class Utils
 
     public static Object deserialize(String path)
     {
+        return deserialize(new File(path));
+    }
+
+    public static Object deserialize(File file)
+    {
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream;
 
         try
         {
-            fileInputStream = new FileInputStream(path);
+            fileInputStream = new FileInputStream(file);
             objectInputStream = new ObjectInputStream(fileInputStream);
 
             Object object = objectInputStream.readObject();
@@ -157,7 +159,17 @@ public class Utils
 
         // If we can't find MAC for @ip, we trying to find MAC for gateway address.
         InetAddress gateway = getDefaultGateway(ip);
-        macAddress = MacAddressHelper.getInstance().getMacAddress(gateway);
-        return macAddress;
+        if (gateway == null) return null;
+
+        PcapNetworkInterface networkInterface = eNetworkInterface.getNetworkInterface();
+        for (PcapAddress pcapAddress : networkInterface.getAddresses())
+            if (pcapAddress.getAddress() instanceof Inet4Address)
+                if (MacAddressHelper._isUnderSameSubNet(gateway, pcapAddress.getAddress(), pcapAddress.getNetmask()))
+                {
+                    macAddress = MacAddressHelper.getInstance().getMacAddress(gateway);
+                    return macAddress;
+                }
+
+        return null;
     }
 }

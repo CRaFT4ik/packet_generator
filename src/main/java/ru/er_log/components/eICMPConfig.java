@@ -2,7 +2,7 @@ package ru.er_log.components;
 
 import java.io.Serializable;
 
-public class eICMPConfig implements Serializable
+public class eICMPConfig implements IConfig, Serializable
 {
     private short type;
     private short code;
@@ -12,6 +12,12 @@ public class eICMPConfig implements Serializable
     private String data;
 
     public eICMPConfig() {}
+
+    @Override
+    public void verify() throws NullPointerException
+    {
+
+    }
 
     public short getType() { return type; }
     public eICMPConfig setType(short type){ this.type = type; return this; }

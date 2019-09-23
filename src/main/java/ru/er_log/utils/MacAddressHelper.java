@@ -1,4 +1,4 @@
-package com.logicmonitor.macaddress.detector;
+package ru.er_log.utils;
 
 import org.pcap4j.core.BpfProgram;
 import org.pcap4j.core.NotOpenException;

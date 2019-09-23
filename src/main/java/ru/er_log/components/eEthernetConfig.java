@@ -1,13 +1,21 @@
 package ru.er_log.components;
 
+import ru.er_log.exceptions.NotFullConfigurationException;
+
 import java.io.Serializable;
 
-public class eEthernetConfig implements Serializable
+public class eEthernetConfig implements IConfig, Serializable
 {
     private String srcMAC;
     private String dstMAC;
 
     public eEthernetConfig() {}
+
+    @Override
+    public void verify() throws NullPointerException
+    {
+
+    }
 
     public String getSrcMAC()
     {

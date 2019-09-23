@@ -1,5 +1,6 @@
 package ru.er_log.components;
 
+import ru.er_log.exceptions.NotFullConfigurationException;
 import ru.er_log.utils.Utils;
 
 import java.io.Serializable;
@@ -7,17 +8,17 @@ import java.io.Serializable;
 /*
  * Describes each field of packet model and a whole packet.
  */
-public class eConfig implements Serializable
+public class eConfig implements IConfig, Serializable
 {
-    public static final int AUTO_VALUE_INTEGER = Integer.MIN_VALUE;
+    public enum fourthLevelPackages { TCP, UDP, ICMP }
 
-    private eEthernetConfig ethernetConfig = null;
-    private eIPv4Config ipv4Config = null;
-    private eTCPConfig tcpConfig = null;
-    private eUDPConfig udpConfig = null;
-    private eICMPConfig icmpConfig = null;
+    private eEthernetConfig ethernetConfig;
+    private eIPv4Config ipv4Config;
+    private eTCPConfig tcpConfig;
+    private eUDPConfig udpConfig;
+    private eICMPConfig icmpConfig;
 
-    private int selectedTabId = 0;
+    private fourthLevelPackages selectedType;
 
     private final String createTime;
 
@@ -41,14 +42,40 @@ public class eConfig implements Serializable
         return stringBuilder.toString();
     }
 
-    public int getSelectedTabId()
+    /* Checks, if this config completely filled and can be used for. */
+    @Override
+    public void verify() throws NullPointerException
     {
-        return selectedTabId;
+        if (selectedType == null)
+            throw new NullPointerException("Packet type not specified");
+
+        IConfig selectedConfig;
+        switch (selectedType)
+        {
+            case TCP:
+                selectedConfig = tcpConfig;
+                break;
+            case UDP:
+                selectedConfig = udpConfig;
+                break;
+            case ICMP:
+                selectedConfig = icmpConfig;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + selectedType);
+        }
+
+        selectedConfig.verify();
     }
 
-    public eConfig setSelectedTabId(int selectedTabId)
+    public fourthLevelPackages getSelectedType()
     {
-        this.selectedTabId = selectedTabId;
+        return selectedType;
+    }
+
+    public eConfig setSelectedType(fourthLevelPackages selectedTabId)
+    {
+        this.selectedType = selectedType;
         return this;
     }
 

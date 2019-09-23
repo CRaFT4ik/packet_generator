@@ -5,17 +5,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.er_log.controllers.RootController;
 
 public class Main extends Application
 {
     @Override
     public void start(Stage stage) throws Exception
     {
-        Parent root = FXMLLoader.load(getClass().getResource("/ru/er_log/views/scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ru/er_log/views/scene.fxml"));
+        Parent root = loader.load();
+
+        RootController controller = (RootController) loader.getController();
+        controller.setStage(stage);
 
         Scene scene = new Scene(root);
-        stage.setResizable(false);
         stage.setTitle("ePacket Generator");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

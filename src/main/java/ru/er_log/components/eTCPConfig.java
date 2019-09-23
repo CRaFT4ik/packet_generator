@@ -1,8 +1,10 @@
 package ru.er_log.components;
 
+import ru.er_log.exceptions.NotFullConfigurationException;
+
 import java.io.Serializable;
 
-public class eTCPConfig implements Serializable
+public class eTCPConfig implements IConfig, Serializable
 {
     private int srcPort;
     private int dstPort;
@@ -17,7 +19,11 @@ public class eTCPConfig implements Serializable
     private long options;
     private String data;
 
-    public eTCPConfig() {
+    public eTCPConfig() {}
+
+    @Override
+    public void verify() throws NullPointerException
+    {
 
     }
 
@@ -25,102 +31,128 @@ public class eTCPConfig implements Serializable
     {
         return srcPort;
     }
+
     public eTCPConfig setSrcPort(int srcPort)
     {
         this.srcPort = srcPort;
         return this;
     }
+
     public int getDstPort()
     {
         return dstPort;
     }
+
     public eTCPConfig setDstPort(int dstPort)
     {
         this.dstPort = dstPort;
         return this;
     }
+
     public long getSeqNum()
     {
         return seqNum;
     }
+
     public eTCPConfig setSeqNum(long seqNum)
     {
         this.seqNum = seqNum;
         return this;
     }
+
     public long getAskNum()
     {
         return askNum;
     }
+
     public eTCPConfig setAskNum(long askNum)
     {
         this.askNum = askNum;
         return this;
     }
+
     public short getOffset()
     {
         return offset;
     }
+
     public eTCPConfig setOffset(short offset)
     {
         this.offset = offset;
         return this;
     }
+
     public eTCPConfig.reserved getReserved()
     {
         return reserved;
     }
+
     public eTCPConfig setReserved(eTCPConfig.reserved reserved)
     {
         this.reserved = reserved;
         return this;
     }
+
     public eTCPConfig.flags getFlags()
     {
         return flags;
     }
+
     public eTCPConfig setFlags(eTCPConfig.flags flags)
     {
         this.flags = flags;
         return this;
     }
+
     public int getWindowSize()
     {
         return windowSize;
     }
+
     public eTCPConfig setWindowSize(int windowSize)
     {
         this.windowSize = windowSize;
         return this;
     }
+
     public int getChecksum()
     {
         return checksum;
     }
+
     public eTCPConfig setChecksum(int checksum)
     {
         this.checksum = checksum;
         return this;
     }
+
     public int getUrgent()
     {
         return urgent;
     }
+
     public eTCPConfig setUrgent(int urgent)
     {
         this.urgent = urgent;
         return this;
     }
+
     public long getOptions()
     {
         return options;
     }
+
     public eTCPConfig setOptions(long options)
     {
         this.options = options;
         return this;
     }
-    public String getData() { return data; }
+
+    public String getData()
+    {
+        return data;
+    }
+
     public eTCPConfig setData(String data)
     {
         this.data = data;
