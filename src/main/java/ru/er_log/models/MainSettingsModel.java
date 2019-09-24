@@ -4,9 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
-import org.pcap4j.packet.namednumber.EtherType;
-import org.pcap4j.packet.namednumber.IpNumber;
-import org.pcap4j.packet.namednumber.IpVersion;
+import org.pcap4j.packet.namednumber.*;
 import org.pcap4j.util.MacAddress;
 import ru.er_log.components.*;
 import ru.er_log.utils.Utils;
@@ -20,14 +18,17 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
-import static ru.er_log.utils.Utils.log;
+import static ru.er_log.utils.Log.err;
+import static ru.er_log.utils.Log.out;
 
 public class MainSettingsModel
 {
     private ObservableList<eNetworkInterface> networkInterfaces;
     private ObservableList<eIPv4Config.tos.precedence> ipv4TosPreValues;
     private ObservableList<eConfig> configurationList;
+    private eConfig defaultConfig;
 
     public MainSettingsModel()
     {
@@ -36,12 +37,12 @@ public class MainSettingsModel
 
         try
         {
-            log("Adding interfaces:");
+            out("Adding interfaces:");
             for (PcapNetworkInterface networkInterface : Pcaps.findAllDevs())
             {
                 if (networkInterface.isRunning() && !networkInterface.isLoopBack())
                 {
-                    log(networkInterface);
+                    out(networkInterface);
                     networkInterfaces.add(new eNetworkInterface(networkInterface));
                 }
             }
@@ -53,79 +54,82 @@ public class MainSettingsModel
         ipv4TosPreValues = FXCollections.observableArrayList();
         ipv4TosPreValues.addAll(Arrays.asList(eIPv4Config.tos.precedence.values()));
 
-//        Thread t = new Thread()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                PcapHandle sendHandle = null;
-//                try
-//                {
-//                    IcmpV4EchoPacket.Builder icmpBuilder = new IcmpV4EchoPacket.Builder();
-//                    try
-//                    {
-//                        icmpBuilder
-//                                .build();
-//                    } catch (Exception e)
-//                    {
-//                        e.printStackTrace();
-//                    }
-//
-//                    MacAddress srcMAC = MacAddress.getByName("AA-FF-AA-FF-AA-FF", "-");
-//                    MacAddress dstMAC = MacAddress.getByName("BB-FF-AA-FF-AA-FF", "-");
-//
-//                    EthernetPacket.Builder etherBuilder = new EthernetPacket.Builder();
-//                    try
-//                    {
-//                        etherBuilder
-//                                .srcAddr(srcMAC)
-//                                .dstAddr(dstMAC)
-//                                .type(EtherType.IPV4)
-//                                .payloadBuilder(icmpBuilder)
-//                                .paddingAtBuild(true)
-//                                .build();
-//                    } catch (Exception e)
-//                    {
-//                        e.printStackTrace();
-//                    }
-//
-//                    PcapNetworkInterface nif = networkInterfaces.get(0).getNetworkInterface();
-//
-//                    if (nif == null)
-//                    {
-//                        logErr("nif is null!");
-//                        return;
-//                    }
-//
-//                    int snapLen = 65536;
-//                    PcapNetworkInterface.PromiscuousMode mode = PcapNetworkInterface.PromiscuousMode.PROMISCUOUS;
-//                    int timeout = 10;
-//                    sendHandle = nif.openLive(snapLen, mode, timeout);
-//                    for (int i = 0; i < 1; i++)
-//                    {
-//                        Packet p = etherBuilder.build();
-//                        System.out.println(p);
-//                        sendHandle.sendPacket(p);
-//                        try
-//                        {
-//                            Thread.sleep(1000);
-//                        } catch (InterruptedException e)
-//                        {
-//                            break;
-//                        }
-//                    }
-//                } catch (PcapNativeException | NotOpenException e)
-//                {
-//                    e.printStackTrace();
-//                } finally
-//                {
-//                    if (sendHandle != null && sendHandle.isOpen())
-//                        sendHandle.close();
-//                }
-//            }
-//        };
-//
-//        t.start();
+        generateDefaultConfig();
+    }
+
+    private void generateDefaultConfig()
+    {
+        if (defaultConfig != null) return;
+
+        eEthernetConfig ethernetConfig = new eEthernetConfig();
+        eIPv4Config ipv4Config = new eIPv4Config();
+        eTCPConfig tcpConfig = new eTCPConfig();
+        eUDPConfig udpConfig = new eUDPConfig();
+        eICMPConfig icmpConfig = new eICMPConfig();
+
+        defaultConfig = new eConfig();
+        defaultConfig.setEthernetConfig(ethernetConfig);
+        defaultConfig.setIpv4Config(ipv4Config);
+        defaultConfig.setTcpConfig(tcpConfig);
+        defaultConfig.setUdpConfig(udpConfig);
+        defaultConfig.setIcmpConfig(icmpConfig);
+        defaultConfig.setSelectedType(eConfig.fourthLevelPackages.TCP);
+
+        eIPv4Config.tos ipv4Tos = new eIPv4Config.tos(eIPv4Config.tos.precedence._000, false, false, false, false, false);
+        eIPv4Config.flags ipv4Flags = new eIPv4Config.flags(false, true, false);
+        ipv4Config
+                .setVersion((short) 4)
+                .setIhl((short) 5)
+                .setTos(ipv4Tos)
+                .setLength((int) eConfig.AUTO_VALUE)
+                .setId(new Random().nextInt((0xFFFF + 0x1)))
+                .setFlags(ipv4Flags)
+                .setOffset((short) 0)
+                .setTtl((short) 64)
+                .setChecksum((int) eConfig.AUTO_VALUE)
+                .setSrcIP("")
+                .setDstIP("")
+                //.setOptions(eConfig.AUTO_VALUE)
+        ;
+
+        eTCPConfig.reserved tcpReserved = new eTCPConfig.reserved(false, false, false, false, false, false);
+        eTCPConfig.flags tcpFlags = new eTCPConfig.flags(false, false, false, false, true, false);
+        tcpConfig
+                .setSrcPort(37573)
+                .setDstPort(80)
+                .setSeqNum(new Random().nextInt((0xFFFF + 0x1)))
+                .setAskNum(0)
+                .setOffset((short) 5)
+                .setReserved(tcpReserved)
+                .setFlags(tcpFlags)
+                .setWindowSize(65535)
+                .setChecksum((int) eConfig.AUTO_VALUE)
+                .setUrgent(0)
+                //.setOptions(eConfig.AUTO_VALUE)
+                .setData("")
+        ;
+
+        udpConfig
+                .setSrcPort(37573)
+                .setDstPort(80)
+                .setLength((int) eConfig.AUTO_VALUE)
+                .setChecksum((int) eConfig.AUTO_VALUE)
+                .setData("")
+        ;
+
+        icmpConfig
+                .setType((short) 8)
+                .setCode((short) 0)
+                .setChecksum((int) eConfig.AUTO_VALUE)
+                .setId(new Random().nextInt((0xFFFF + 0x1)))
+                .setSeqNum(0)
+                .setData("")
+        ;
+    }
+
+    public eConfig getDefaultConfig()
+    {
+        return this.defaultConfig;
     }
 
     public String getExportFormat()
@@ -184,10 +188,17 @@ public class MainSettingsModel
         return configurationList;
     }
 
-    public void startSending(ArrayList<eConfig> configList, boolean isLoop, double delayMs) throws UnknownHostException
+    public void startSending(eNetworkInterface networkInterface, ArrayList<eConfig> configList, boolean isLoop, long delayMs)
+            throws UnknownHostException, InterruptedException, PcapNativeException, NotOpenException
     {
-        log("Start sending...");
-        log("Total ", configList.size(), " packets", (isLoop) ? " in loop" : "", " with ", delayMs, " (ms) delay");
+        if (configList.isEmpty())
+        {
+            err("Sending list not specified");
+            return;
+        }
+
+        out("Start sending...");
+        out("Total ", configList.size(), " packets", (isLoop) ? " in loop" : "", " with ", delayMs, " (ms) delay");
 
         ArrayList<EthernetPacket> packets = new ArrayList<>();
         for (eConfig config : configList)
@@ -197,11 +208,11 @@ public class MainSettingsModel
             switch (config.getSelectedType())
             {
                 case TCP:
-                    packet = buildTcpPacket(config.getTcpConfig());
+                    packet = buildTcpPacket(config.getTcpConfig(), config.getIpv4Config());
                     protocol = IpNumber.TCP;
                     break;
                 case UDP:
-                    packet = buildUdpPacket(config.getUdpConfig());
+                    packet = buildUdpPacket(config.getUdpConfig(), config.getIpv4Config());
                     protocol = IpNumber.UDP;
                     break;
                 case ICMP:
@@ -213,32 +224,154 @@ public class MainSettingsModel
             }
 
             IpV4Packet ipV4Packet = buildIpV4Packet(config.getIpv4Config(), packet.getBuilder(), protocol);
-            EthernetPacket ethernetPacket = buildEthernetPacket(config.getEthernetConfig(), ipV4Packet.getPayload().getBuilder());
+            EthernetPacket ethernetPacket = buildEthernetPacket(config.getEthernetConfig(), ipV4Packet.getBuilder());
 
             packets.add(ethernetPacket);
+        }
+
+        if (packets.isEmpty()) return;
+
+        PcapHandle sendHandle = null;
+        try
+        {
+            final int SNAPLEN = 65536; // [bytes]
+            final int READ_TIMEOUT = 10; // [ms]
+            sendHandle = networkInterface.getNetworkInterface().openLive(SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+
+            do
+            {
+                for (EthernetPacket packet : packets)
+                {
+                    sendHandle.sendPacket(packet);
+                    Thread.sleep(delayMs);
+                }
+            } while (isLoop);
+        } finally
+        {
+            if (sendHandle != null && sendHandle.isOpen())
+                sendHandle.close();
         }
     }
 
     private IcmpV4CommonPacket buildIcmpV4Packet(eICMPConfig icmpConfig)
     {
+        IcmpV4Type type = IcmpV4Type.getInstance((byte) icmpConfig.getType());
+        IcmpV4Code code = IcmpV4Code.getInstance(type.value(), (byte) icmpConfig.getCode());
+        short checksum = (short) icmpConfig.getChecksum();
+        short identifier = (short) icmpConfig.getId();
+        short sequence = (short) icmpConfig.getSeqNum();
+
+        Packet.Builder specBuilder;
+
+        if (0 == type.compareTo(IcmpV4Type.ECHO))
+        {
+            specBuilder = new IcmpV4EchoPacket.Builder();
+            IcmpV4EchoPacket.Builder builder = (IcmpV4EchoPacket.Builder) specBuilder;
+            builder
+                    .identifier(identifier)
+                    .sequenceNumber(sequence)
+            ;
+        } else if (0 == type.compareTo(IcmpV4Type.ECHO_REPLY))
+        {
+            specBuilder = new IcmpV4EchoReplyPacket.Builder();
+            IcmpV4EchoReplyPacket.Builder builder = (IcmpV4EchoReplyPacket.Builder) specBuilder;
+            builder
+                    .identifier(identifier)
+                    .sequenceNumber(sequence)
+            ;
+        } else
+        {
+            throw new IllegalStateException("Unknown ICMPv4 type: " + type.toString());
+        }
+
+        UnknownPacket.Builder payload = new UnknownPacket.Builder();
+        payload.rawData(icmpConfig.getData().getBytes());
+        specBuilder
+                .payloadBuilder(payload)
+        ;
+
         IcmpV4CommonPacket.Builder builder = new IcmpV4CommonPacket.Builder();
-        // TODO
+        builder
+                .type(type)
+                .code(code)
+                .correctChecksumAtBuild(icmpConfig.correctChecksumAuto())
+                .checksum(checksum)
+                .payloadBuilder(specBuilder)
+        ;
 
         return builder.build();
     }
 
-    private UdpPacket buildUdpPacket(eUDPConfig udpConfig)
+    private UdpPacket buildUdpPacket(eUDPConfig udpConfig, eIPv4Config ipV4Config) throws UnknownHostException
     {
+        UdpPort srcPort = new UdpPort((short) udpConfig.getSrcPort(), "ePacket Generator src. UDP port");
+        UdpPort dstPort = new UdpPort((short) udpConfig.getDstPort(), "ePacket Generator dst. UDP port");
+        short length = (short) udpConfig.getLength();
+        short checksum = (short) udpConfig.getChecksum();
+        InetAddress srcAddress = Inet4Address.getByName(ipV4Config.getSrcIP());
+        InetAddress dstAddress = Inet4Address.getByName(ipV4Config.getDstIP());
+
+        UnknownPacket.Builder payload = new UnknownPacket.Builder();
+        payload.rawData(udpConfig.getData().getBytes());
+
         UdpPacket.Builder builder = new UdpPacket.Builder();
-        // TODO
+        builder
+                .srcPort(srcPort)
+                .dstPort(dstPort)
+                .correctLengthAtBuild(udpConfig.correctLengthAuto())
+                .length(length)
+                .correctChecksumAtBuild(udpConfig.correctChecksumAuto())
+                .checksum(checksum)
+                .srcAddr(srcAddress) // For checksum calculation.
+                .dstAddr(dstAddress) // Same.
+                .payloadBuilder(payload)
+        ;
 
         return builder.build();
     }
 
-    private TcpPacket buildTcpPacket(eTCPConfig tcpConfig)
+    private TcpPacket buildTcpPacket(eTCPConfig tcpConfig, eIPv4Config ipV4Config) throws UnknownHostException
     {
+        InetAddress srcAddress = Inet4Address.getByName(ipV4Config.getSrcIP());
+        InetAddress dstAddress = Inet4Address.getByName(ipV4Config.getDstIP());
+        TcpPort srcPort = new TcpPort((short) tcpConfig.getSrcPort(), "ePacket Generator src. TCP port");
+        TcpPort dstPort = new TcpPort((short) tcpConfig.getDstPort(), "ePacket Generator dst. TCP port");
+        int seqNumber = (int) tcpConfig.getSeqNum();
+        int ackNumber = (int) tcpConfig.getAskNum();
+        byte dataOffset = (byte) tcpConfig.getOffset();
+        byte reserved = tcpConfig.getReserved().toByte();
+        short window = (short) tcpConfig.getWindowSize();
+        short checksum = (short) tcpConfig.getChecksum();
+        short urgent = (short) tcpConfig.getUrgent();
+
+        UnknownPacket.Builder payload = new UnknownPacket.Builder();
+        payload.rawData(tcpConfig.getData().getBytes());
+
         TcpPacket.Builder builder = new TcpPacket.Builder();
-        // TODO
+        builder
+                .srcPort(srcPort)
+                .dstPort(dstPort)
+                .sequenceNumber(seqNumber)
+                .acknowledgmentNumber(ackNumber)
+                .correctLengthAtBuild(tcpConfig.correctOffsetAuto())
+                .dataOffset(dataOffset)
+                .reserved(reserved)
+                .urg(tcpConfig.getFlags().isU())
+                .ack(tcpConfig.getFlags().isA())
+                .psh(tcpConfig.getFlags().isP())
+                .rst(tcpConfig.getFlags().isR())
+                .syn(tcpConfig.getFlags().isS())
+                .fin(tcpConfig.getFlags().isF())
+                .window(window)
+                .correctChecksumAtBuild(tcpConfig.correctChecksumAuto())
+                .checksum(checksum)
+                .srcAddr(srcAddress) // For checksum calculation.
+                .dstAddr(dstAddress)
+                .urgentPointer(urgent)
+                //.options()
+                .paddingAtBuild(true)
+                .payloadBuilder(payload)
+        ;
 
         return builder.build();
     }
@@ -246,7 +379,7 @@ public class MainSettingsModel
     private IpV4Packet buildIpV4Packet(eIPv4Config ipV4Config, Packet.Builder payload, IpNumber protocol) throws UnknownHostException
     {
         byte ihl = ((Short) ipV4Config.getIhl()).byteValue();
-        IpVersion ipVersion = ipV4Config.getVersion() == 4 ? IpVersion.IPV4 : null;
+        IpVersion ipVersion = IpVersion.IPV4; // ipV4Config.getVersion() == 4 ? IpVersion.IPV4 : null;
         IpV4Packet.IpV4Tos tos = IpV4Rfc791Tos.newInstance(ipV4Config.getTos().toByte());
         short totalLength = (short) ipV4Config.getLength();
         short id = (short) ipV4Config.getId();
@@ -266,7 +399,7 @@ public class MainSettingsModel
                 .reservedFlag(ipV4Config.getFlags().isX())
                 .dontFragmentFlag(ipV4Config.getFlags().isD())
                 .moreFragmentFlag(ipV4Config.getFlags().isM())
-                //.fragmentOffset()
+                .fragmentOffset(ipV4Config.getOffset())
                 .ttl(ttl)
                 .protocol(protocol)
                 .correctChecksumAtBuild(ipV4Config.correctChecksumAuto())
@@ -275,8 +408,10 @@ public class MainSettingsModel
                 .dstAddr((Inet4Address) dstAddress)
                 //.options()
                 .paddingAtBuild(true)
-                .payloadBuilder(payload);
+                .payloadBuilder(payload)
+        ;
 
+//        out("IPv4 header: ", Utils.bytesToHex(builder.build().getHeader().getRawData()));
         return builder.build();
     }
 
@@ -287,8 +422,9 @@ public class MainSettingsModel
                 .dstAddr(MacAddress.getByName(ethernetConfig.getDstMAC()))
                 .srcAddr(MacAddress.getByName(ethernetConfig.getSrcMAC()))
                 .type(EtherType.IPV4)
+                .paddingAtBuild(true)
                 .payloadBuilder(payload)
-                .paddingAtBuild(true);
+        ;
 
         return builder.build();
     }

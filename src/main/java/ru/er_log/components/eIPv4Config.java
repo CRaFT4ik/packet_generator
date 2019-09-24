@@ -10,21 +10,14 @@ public class eIPv4Config implements IConfig, Serializable
     private int length = (int) AUTO_VALUE;
     private int id;
     private flags flags;
+    private short offset;
     private short ttl;
     private int checksum = (int) AUTO_VALUE;
     private String srcIP;
     private String dstIP;
     private long options = 0x0;
 
-    public eIPv4Config()
-    {
-    }
-
-    @Override
-    public void verify() throws NullPointerException
-    {
-
-    }
+    public eIPv4Config() {}
 
     public short getVersion()
     {
@@ -94,6 +87,17 @@ public class eIPv4Config implements IConfig, Serializable
     public eIPv4Config setFlags(eIPv4Config.flags flags)
     {
         this.flags = flags;
+        return this;
+    }
+
+    public short getOffset()
+    {
+        return offset;
+    }
+
+    public eIPv4Config setOffset(short offset)
+    {
+        this.offset = offset;
         return this;
     }
 

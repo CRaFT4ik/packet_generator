@@ -67,6 +67,14 @@
 /* Buttons */
 /* - - - - - - - - - */
 
+.button.error
+{
+  -fx-outer-border: #dc3545;
+  -fx-border-width: 1;
+  -fx-border-radius: 2;
+  -fx-effect: dropshadow(three-pass-box, rgba(220, 53, 69, 0.2), 2, 0, 0, 0);
+}
+
 .button-icon
 {
     -fx-background-size: 13 13;

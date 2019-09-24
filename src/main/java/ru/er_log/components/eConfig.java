@@ -1,6 +1,5 @@
 package ru.er_log.components;
 
-import ru.er_log.exceptions.NotFullConfigurationException;
 import ru.er_log.utils.Utils;
 
 import java.io.Serializable;
@@ -10,14 +9,14 @@ import java.io.Serializable;
  */
 public class eConfig implements IConfig, Serializable
 {
-    public enum fourthLevelPackages { TCP, UDP, ICMP }
+    public enum fourthLevelPackages implements Serializable
+    { TCP, UDP, ICMP }
 
     private eEthernetConfig ethernetConfig;
     private eIPv4Config ipv4Config;
     private eTCPConfig tcpConfig;
     private eUDPConfig udpConfig;
     private eICMPConfig icmpConfig;
-
     private fourthLevelPackages selectedType;
 
     private final String createTime;
@@ -35,37 +34,12 @@ public class eConfig implements IConfig, Serializable
 
         if (ethernetConfig != null) stringBuilder.append("Eth ");
         if (ipv4Config != null) stringBuilder.append("IPv4 ");
-        if (tcpConfig != null) stringBuilder.append("TCP ");
-        if (udpConfig != null) stringBuilder.append("UDP ");
-        if (icmpConfig != null) stringBuilder.append("ICMP ");
+
+        if (tcpConfig != null && selectedType == fourthLevelPackages.TCP) stringBuilder.append("TCP ");
+        else if (udpConfig != null && selectedType == fourthLevelPackages.UDP) stringBuilder.append("UDP ");
+        else if (icmpConfig != null && selectedType == fourthLevelPackages.ICMP) stringBuilder.append("ICMP ");
 
         return stringBuilder.toString();
-    }
-
-    /* Checks, if this config completely filled and can be used for. */
-    @Override
-    public void verify() throws NullPointerException
-    {
-        if (selectedType == null)
-            throw new NullPointerException("Packet type not specified");
-
-        IConfig selectedConfig;
-        switch (selectedType)
-        {
-            case TCP:
-                selectedConfig = tcpConfig;
-                break;
-            case UDP:
-                selectedConfig = udpConfig;
-                break;
-            case ICMP:
-                selectedConfig = icmpConfig;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + selectedType);
-        }
-
-        selectedConfig.verify();
     }
 
     public fourthLevelPackages getSelectedType()
@@ -75,7 +49,7 @@ public class eConfig implements IConfig, Serializable
 
     public eConfig setSelectedType(fourthLevelPackages selectedTabId)
     {
-        this.selectedType = selectedType;
+        this.selectedType = selectedTabId;
         return this;
     }
 

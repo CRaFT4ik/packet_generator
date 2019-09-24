@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import ru.er_log.ui.BorderedTitledPane?>
 <?import ru.er_log.ui.TextFieldExtended?>
 
@@ -55,7 +56,7 @@
                                                     <RowConstraints vgrow="NEVER" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <TextFieldExtended fx:id="fieldIPv4ip" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="1" maxNumValue="4" maxWidth="40.0" minNumValue="4" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                      <TextFieldExtended fx:id="fieldIPv4ip" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="1" maxNumValue="4" maxWidth="40.0" minNumValue="4" text="4" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
@@ -158,20 +159,27 @@
                                                    <rowConstraints>
                                                       <RowConstraints vgrow="NEVER" />
                                                       <RowConstraints vgrow="NEVER" />
+                                                      <RowConstraints vgrow="NEVER" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <TextFieldExtended fx:id="fieldIPv4ttl" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                      <TextFieldExtended fx:id="fieldIPv4ttl" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                       </TextFieldExtended>
-                                                      <TextFieldExtended fx:id="fieldIPv4checksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                                                      <TextFieldExtended fx:id="fieldIPv4checksum" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                       </TextFieldExtended>
-                                                      <Label text="Time to Live" />
-                                                      <CheckBox fx:id="checkboxIPv4checksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="1" />
+                                                      <Label text="Time to Live" GridPane.rowIndex="1" />
+                                                      <CheckBox fx:id="checkboxIPv4checksum" mnemonicParsing="false" text="Checksum" GridPane.rowIndex="2" />
+                                                      <TextFieldExtended fx:id="fieldIPv4offset" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="4" maxNumValue="8191" maxWidth="72.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextFieldExtended>
+                                                      <Label text="Fragment Offset" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -251,31 +259,31 @@
                                             </rowConstraints>
                                              <children>
                                                 <Label text="Source Port" />
-                                                <TextFieldExtended fx:id="fieldTCPsrcport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1">
+                                                <TextFieldExtended fx:id="fieldTCPsrcport" alignment="CENTER_RIGHT" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
                                                 <Label text="Destination Port" GridPane.rowIndex="1" />
-                                                <TextFieldExtended fx:id="fieldTCPdstport" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <TextFieldExtended fx:id="fieldTCPdstport" alignment="CENTER_RIGHT" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
                                                 <Label text="Seq Number" GridPane.rowIndex="2" />
-                                                <TextFieldExtended fx:id="fieldTCPseqnum" alignment="CENTER" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <TextFieldExtended fx:id="fieldTCPseqnum" alignment="CENTER_RIGHT" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
                                                 <Label text="Ack Number" GridPane.rowIndex="3" />
-                                                <TextFieldExtended fx:id="fieldTCPacknum" alignment="CENTER" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <TextFieldExtended fx:id="fieldTCPacknum" alignment="CENTER_RIGHT" letMaxNumValue="true" letOnlyNumbers="true" maxCharsNumber="10" maxNumValue="4294967295" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
                                                 <Label text="Offset" GridPane.rowIndex="4" />
-                                                <TextFieldExtended fx:id="fieldTCPoffset" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="2" maxNumValue="15" maxWidth="72.0" minNumValue="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <TextFieldExtended fx:id="fieldTCPoffset" alignment="CENTER_RIGHT" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="2" maxNumValue="15" maxWidth="72.0" minNumValue="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
@@ -412,8 +420,8 @@
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
-                                                <Label text="Length" GridPane.rowIndex="2" />
-                                                <TextFieldExtended fx:id="fieldUDPlength" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65535" maxWidth="72.0" minNumValue="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <CheckBox fx:id="checkboxUDPlength" mnemonicParsing="false" text="Length" GridPane.rowIndex="2" />
+                                                <TextFieldExtended fx:id="fieldUDPlength" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="5" maxNumValue="65507" maxWidth="72.0" minNumValue="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
@@ -438,7 +446,7 @@
                                     </VBox>
                               </content>
                             </Tab>
-                              <Tab text="ICMP">
+                              <Tab text="ICMP Echo/Reply">
                                 <content>
                                     <VBox>
                                        <children>
@@ -462,7 +470,7 @@
                                                    </opaqueInsets>
                                                 </TextFieldExtended>
                                                 <Label text="Code" GridPane.rowIndex="1" />
-                                                <TextFieldExtended fx:id="fieldICMPcode" alignment="CENTER" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <TextFieldExtended fx:id="fieldICMPcode" alignment="CENTER" disable="true" letMaxNumValue="true" letMinNumValue="true" letOnlyNumbers="true" maxCharsNumber="3" maxNumValue="255" maxWidth="72.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
@@ -597,7 +605,7 @@
                                                 </GridPane>
                                              </children>
                                           </VBox>
-                                          <VBox spacing="3.0" HBox.hgrow="NEVER">
+                                          <VBox spacing="5.0" HBox.hgrow="NEVER">
                                              <children>
                                                 <Button fx:id="buttonListAdd" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
                                                    <VBox.margin>
@@ -619,6 +627,11 @@
                                                 </Button>
                                                 <VBox alignment="BOTTOM_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
                                                    <children>
+                                                      <Button fx:id="buttonLog" minHeight="29.0" minWidth="29.0" mnemonicParsing="false" text="Log" textOverrun="CLIP">
+                                                         <font>
+                                                            <Font size="9.0" />
+                                                         </font>
+                                                      </Button>
                                                       <Button fx:id="buttonHelp" minHeight="29.0" minWidth="29.0" mnemonicParsing="false">
                                                          <styleClass>
                                                             <String fx:value="button-icon" />

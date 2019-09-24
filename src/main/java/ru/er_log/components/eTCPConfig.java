@@ -1,7 +1,5 @@
 package ru.er_log.components;
 
-import ru.er_log.exceptions.NotFullConfigurationException;
-
 import java.io.Serializable;
 
 public class eTCPConfig implements IConfig, Serializable
@@ -10,22 +8,16 @@ public class eTCPConfig implements IConfig, Serializable
     private int dstPort;
     private long seqNum;
     private long askNum;
-    private short offset;
+    private short offset = (short) AUTO_VALUE;
     private reserved reserved;
     private flags flags;
     private int windowSize;
-    private int checksum;
+    private int checksum = (int) AUTO_VALUE;
     private int urgent;
     private long options;
     private String data;
 
     public eTCPConfig() {}
-
-    @Override
-    public void verify() throws NullPointerException
-    {
-
-    }
 
     public int getSrcPort()
     {
@@ -82,6 +74,11 @@ public class eTCPConfig implements IConfig, Serializable
         return this;
     }
 
+    public boolean correctOffsetAuto()
+    {
+        return offset == (short) AUTO_VALUE;
+    }
+
     public eTCPConfig.reserved getReserved()
     {
         return reserved;
@@ -124,6 +121,11 @@ public class eTCPConfig implements IConfig, Serializable
     {
         this.checksum = checksum;
         return this;
+    }
+
+    public boolean correctChecksumAuto()
+    {
+        return checksum == (int) AUTO_VALUE;
     }
 
     public int getUrgent()
@@ -176,6 +178,20 @@ public class eTCPConfig implements IConfig, Serializable
             this.bit3 = bit_3;
             this.bit4 = bit_4;
             this.bit5 = bit_5;
+        }
+
+        public byte toByte()
+        {
+            byte value = 0x0;
+
+            value |= (isBit0() ? 1 : 0) << 5;
+            value |= (isBit1() ? 1 : 0) << 4;
+            value |= (isBit2() ? 1 : 0) << 3;
+            value |= (isBit3() ? 1 : 0) << 2;
+            value |= (isBit4() ? 1 : 0) << 1;
+            value |= (isBit5() ? 1 : 0);
+
+            return value;
         }
 
         public boolean isBit0()

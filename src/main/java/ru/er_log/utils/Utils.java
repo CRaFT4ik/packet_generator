@@ -15,33 +15,6 @@ import java.util.StringTokenizer;
 
 public class Utils
 {
-    private static final String debugPrefix   = "  [ePG DEBUG]";
-    private static final String errorPrefix   = "  [ePG ERROR]";
-    private static final String warningPrefix = "[ePG WARNING]";
-
-    public static void log(Object ... objects)
-    {
-        System.out.print(debugPrefix + " ");
-        for (Object object : objects)
-            System.out.print(object.toString());
-        System.out.println();
-    }
-
-    public static void logErr(Object ... objects)
-    {
-        System.err.print(errorPrefix + " ");
-        for (Object object : objects)
-            System.err.print(object.toString());
-        System.err.println();
-    }
-
-    public static void logWarn(Object ... objects)
-    {
-        System.out.print(warningPrefix + " ");
-        for (Object object : objects)
-            System.out.print(object.toString());
-        System.out.println();
-    }
 
     public static void serialize(Object object, String path)
     {
@@ -64,11 +37,11 @@ public class Utils
             objectOutputStream.writeObject(object);
             objectOutputStream.close();
 
-            log("Serialization success!");
+            Log.out("Serialization success!");
         } catch (IOException e)
         {
             e.printStackTrace();
-            logErr("Serialization failed!");
+            Log.err("Serialization failed!");
         }
     }
 
@@ -171,5 +144,15 @@ public class Utils
                 }
 
         return null;
+    }
+
+    public static String bytesToHex(byte[] bytes)
+    {
+        StringBuilder sb = new StringBuilder();
+        String separator = "-";
+        for (byte b : bytes)
+            sb.append(String.format("%02x", b)).append(separator);
+        if (sb.length() > 0) sb.deleteCharAt(sb.lastIndexOf(separator));
+        return sb.toString().toLowerCase();
     }
 }

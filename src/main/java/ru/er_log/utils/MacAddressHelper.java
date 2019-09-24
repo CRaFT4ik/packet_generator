@@ -47,6 +47,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static ru.er_log.utils.Log.err;
+import static ru.er_log.utils.Log.warn;
+
 /**
  * Detect a mac address
  * The main logic is:
@@ -192,6 +195,7 @@ public class MacAddressHelper
             return _getMacAddress(address);
         } catch (Exception e)
         {
+            warn(e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -280,6 +284,7 @@ public class MacAddressHelper
                 cyclicBarrier.await(_waitReceiveTaskStartRunningInSeconds, TimeUnit.MILLISECONDS);
             } catch (BrokenBarrierException | TimeoutException e)
             {
+                err(e.getMessage());
                 e.printStackTrace();
                 return remoteMacAddress.get();
             }
@@ -289,6 +294,7 @@ public class MacAddressHelper
                 receiveFuture.get(_waitResponseTimeoutInMillSeconds, TimeUnit.MILLISECONDS);
             } catch (Exception e)
             {
+                err(e.getMessage());
                 e.printStackTrace();
             }
             return remoteMacAddress.get();
@@ -511,6 +517,7 @@ public class MacAddressHelper
                 receiveHandle.loop(_sendPacketCount, listener);
             } catch (Exception e)
             {
+                err(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -648,6 +655,7 @@ public class MacAddressHelper
             } catch (UnknownHostException e)
             {
                 System.out.println("Unknown host " + ip);
+                err(e.getMessage());
                 e.printStackTrace();
             }
         }
