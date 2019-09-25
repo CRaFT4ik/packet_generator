@@ -56,11 +56,11 @@ public class MainSettingsModel
             out("Adding interfaces:");
             for (PcapNetworkInterface networkInterface : Pcaps.findAllDevs())
             {
-                if (networkInterface.isRunning() && !networkInterface.isLoopBack())
-                {
+//                if (networkInterface.isRunning() && !networkInterface.isLoopBack())
+//                {
                     out(networkInterface);
                     networkInterfaces.add(new eNetworkInterface(networkInterface));
-                }
+//                }
             }
         } catch (PcapNativeException e)
         {

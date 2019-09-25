@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.stage.FocusUngrabEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
