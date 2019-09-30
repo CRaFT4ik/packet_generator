@@ -89,20 +89,20 @@
 
 .button-icon.reset
 {
-    -fx-background-image: url("/ru/er_log/icons/reset.png");
+    -fx-background-image: url("../icons/reset.png");
 }
 
 .button-icon.plus
 {
-    -fx-background-image: url("/ru/er_log/icons/plus.png");
+    -fx-background-image: url("../icons/plus.png");
 }
 
 .button-icon.minus
 {
-    -fx-background-image: url("/ru/er_log/icons/minus.png");
+    -fx-background-image: url("../icons/minus.png");
 }
 
 .button-icon.help
 {
-    -fx-background-image: url("/ru/er_log/icons/help.png");
+    -fx-background-image: url("../icons/help.png");
 }

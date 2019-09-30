@@ -20,7 +20,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ru.er_log.controllers.RootController;
 
@@ -41,8 +40,6 @@ public class Main
         @Override
         public void start(Stage stage) throws Exception
         {
-            Font.loadFont("file:resources/ru/er_log/fonts/consolas.ttf", 12);
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ru/er_log/views/scene.fxml"));
             Parent root = loader.load();
 
